@@ -59,7 +59,7 @@ export default function orderstable() {
     <div suppressHydrationWarning className="flex-1 bg-[#0f172a] min-h-screen p-8">
       <div className="mb-6 flex items-center justify-between">
     <Table className="text-white">
-      <TableCaption>Orders table.</TableCaption>
+      <TableCaption>Orders table</TableCaption>
       <TableHeader className="text-white">
         <TableRow>
           <TableHead className="w-[100px]">Invoice</TableHead>

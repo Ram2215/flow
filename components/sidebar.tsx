@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
+  Award,
   LayoutDashboard,
   ShoppingCart,
   Users,
@@ -21,7 +22,11 @@ const navItems = [
   { label: "Orders", href: "/dashboard/orders", icon: ShoppingCart },
   { label: "Customers", href: "/dashboard/customers", icon: Users },
   { label: "Warehouse", href: "/warehouse", icon: Warehouse, hasSubmenu: true,
-    children:[{label: "Brands", href: "/dashboard/warehouse/brand"}]
+    children:[{label: "Brands", href: "/dashboard/warehouse/brands",icon:Award,},
+              {label: "Categories",href:"/dashboard/warehouse/categories"},
+              {label:"Products",href:"/dashboard/warehouse/products"},
+
+    ]
    },
   
 ];
@@ -51,6 +56,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
   const pathname = usePathname();
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [warehouseopen,setwarehouseopen]=useState(false)
 
   useEffect(() => {
     fetch("/api/auth/get-session")
@@ -108,8 +114,44 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
 
       <nav className="flex-1 px-3 space-y-1">
         {navItems.map((item) => {
-          const isActive = pathname === item.href;
           const Icon = item.icon;
+          if(item.children){
+            return(
+              <div key={item.label} >
+                <button onClick={()=>setwarehouseopen(true)}
+                   className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-[#1e293b]/50">
+                  <Icon className="size-4 shrink-0"/>
+                  {!collapsed && (
+            <>
+              <span className="flex-1 text-left">
+                {item.label}
+              </span>
+
+              <ChevronDown
+                className={cn(
+                  "size-4 transition-transform",
+                  warehouseopen && "rotate-180"
+                )}
+              />
+            </>
+          )}
+
+                  
+                </button>
+                {!collapsed && warehouseopen && (
+                  <div className="ml-8 mt-1 space-y-1">
+                    {item.children.map((child)=>
+                    <Link key={child.href} href={child.href} className={cn("block rounded-md px-3 py-2 text-sm text-zinc-400 hover:bg-[#1e293b] hover:text-white",
+                      pathname===child.href && "bg-[#1e293b] text-white"
+                    )}>{child.label}</Link>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          }
+          const isActive = pathname === item.href;
+       
           return (
             <Link
               key={item.href}

@@ -50,6 +50,34 @@
       "when": 1781778302280,
       "tag": "0006_needy_tag",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1781854370155,
+      "tag": "0007_early_manta",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1781858844051,
+      "tag": "0008_warm_tyrannus",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1781933481046,
+      "tag": "0009_chilly_sugar_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1781953036628,
+      "tag": "0010_easy_toad",
+      "breakpoints": true
     }
   ]
 }
