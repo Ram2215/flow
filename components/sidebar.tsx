@@ -19,12 +19,12 @@ import {
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Orders", href: "/dashboard/orders", icon: ShoppingCart },
-  { label: "Customers", href: "/dashboard/customers", icon: Users },
+  { label: "Orders", href: "/orders", icon: ShoppingCart },
+  { label: "Customers", href: "/customers", icon: Users },
   { label: "Warehouse", href: "/warehouse", icon: Warehouse, hasSubmenu: true,
-    children:[{label: "Brands", href: "/dashboard/warehouse/brands",icon:Award,},
-              {label: "Categories",href:"/dashboard/warehouse/categories"},
-              {label:"Products",href:"/dashboard/warehouse/products"},
+    children:[{label: "Brands", href: "/warehouse/brands",icon:Award,},
+              {label: "Categories",href:"/warehouse/categories"},
+              {label:"Products",href:"/warehouse/products"},
 
     ]
    },
