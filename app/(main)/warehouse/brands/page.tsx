@@ -163,9 +163,9 @@ export default function TableDemo() {
             <TableCell className="text-right">{invoice.totalAmount}</TableCell>
           </TableRow>
         ))} */}
-        {filterbran.map((i)=>{
+        {filterbran.map((i,index)=>{
             return(<TableRow key={i.id} className="font-medium text-white">
-                <TableCell>{i.id}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell>{i.name}</TableCell>
                 <TableCell>
                   {prod.filter((pro)=>pro.brand===i.name).length}

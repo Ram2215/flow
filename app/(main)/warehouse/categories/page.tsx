@@ -161,9 +161,9 @@ export default function category(){
             <TableCell className="text-right">{invoice.totalAmount}</TableCell>
           </TableRow>
         ))} */}
-        {filtercat.map((i)=>{return(
+        {filtercat.map((i,index)=>{return(
         <TableRow key={i.id} className="text-white">
-            <TableCell>{i.id}</TableCell>
+            <TableCell>{index+1}</TableCell>
             <TableCell>{i.name}</TableCell>
             <TableCell>
               {prod.filter((pro)=>pro.category===i.name).length}
