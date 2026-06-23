@@ -15,7 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Field, FieldGroup } from "@/components/ui/field"
-
+import {Pencil,Trash2} from "lucide-react";
+ 
 import {
   Table,
   TableBody,
@@ -26,8 +27,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useEffect,useState } from "react"
+import { FormEvent, useEffect,useState } from "react"
 import {Button} from "@/components/ui/button";
+import { brand } from "@/db/brand-schema";
 
 type bran={
     id:number,
@@ -50,8 +52,7 @@ export default function TableDemo() {
     const [buttonclick,setbuttonclick]=useState(false);
     const [brandname,setbrandname]=useState("");
     const [prod,setprod]=useState<product[]>([])
-
-
+    const [editid,seteditid]=useState<number | null>(null);
     useEffect(()=>{fetch("/api/brand")
         .then((r)=>r.json())
         .then(setBran);},[])
@@ -80,6 +81,41 @@ export default function TableDemo() {
         }
 
     }
+  const handledel=async(id:number)=>{
+    const ok=confirm("Delete this brand?")
+    if(!ok) return;
+    const res=await fetch(`/api/brand/${id}`,{
+      method:"DELETE",
+    })
+    if(res.ok){
+      setBran((prev)=>prev.filter((Bran)=>Bran.id!==id))
+    }
+
+  }
+  const handleeditclick=(brand:bran)=>{
+    seteditid(brand.id);
+    setbrandname(brand.name)
+    setbuttonclick(true)
+  }
+  const handleedit=async(e:React.FormEvent)=>{
+    e.preventDefault
+    if (!brandname.trim()) return;
+    const res=await fetch(`/api/brand/${editid}`,{
+      method:"PATCH",
+      headers:{"content-type":"application/json"},
+      body:JSON.stringify(
+        {name:brandname}
+      )
+    })
+    if(res.ok){
+      const updated=await res.json()
+      setBran((prev)=>prev.map((b)=>b.id===editid? updated: b ))
+    }
+    seteditid(null);
+    setbrandname("")
+    setbuttonclick(false)
+  }
+
     const filterbran=Bran.filter((brand)=>brand.name.toLowerCase().includes(searchname.toLowerCase()))
 
    
@@ -115,6 +151,7 @@ export default function TableDemo() {
           <TableHead className="w-[100px]">No</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Products</TableHead>
+          <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -133,6 +170,19 @@ export default function TableDemo() {
                 <TableCell>
                   {prod.filter((pro)=>pro.brand===i.name).length}
                 </TableCell>
+                
+                <TableCell >
+                  <div className="flex gap-2">
+                  <Button variant="outline" size="sm" className="bg-[#0f172a] rounded-large" onClick={()=>{handleeditclick(i)}}>
+                    <Pencil className="h-4 w-4"/>
+                  </Button>
+                  <Button size="sm" variant="destructive" className="rounded-large" onClick={()=>handledel(i.id)}>
+                  <Trash2 className="h-4 w-4"/>
+                  </Button>
+                 </div>
+                </TableCell>
+              
+
             </TableRow>
         )})}
 
@@ -152,7 +202,7 @@ export default function TableDemo() {
           <DialogHeader>
             <DialogTitle>Brand</DialogTitle>
             <DialogDescription>
-              Add Brand name
+             {editid? "Edit Brand":"Add Brand"}
             </DialogDescription>
           </DialogHeader>
           <FieldGroup>
@@ -168,7 +218,7 @@ export default function TableDemo() {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button onClick={handlesubmit}>Save</Button>
+            <Button onClick={editid? handleedit:handlesubmit}>Save</Button>
           </DialogFooter>
         </DialogContent>
       </form>

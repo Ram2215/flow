@@ -1,6 +1,6 @@
 "use client"
 import {useState,useEffect} from "react";
-import { Search,Plus } from "lucide-react";
+import { Search,Plus,Pencil,Trash2 } from "lucide-react";
 import {Button} from "@/components/ui/button"
 import {
   Table,
@@ -46,6 +46,7 @@ export default function category(){
     const [catname,setcatname]=useState("")
     const [prod,setprod]=useState<product[]>([])
     const [search,setsearch]=useState("")
+    const [editid,seteditid]=useState<number | null>(null)
  
 
     useEffect(()=>{fetch("/api/category")
@@ -77,6 +78,42 @@ export default function category(){
           setdialogclick(false)
         }
     }
+    const handledel=async(id:Number)=>{
+      const ok=confirm("Are you sure you want to delete this category?")
+      if(!ok) return;
+      const res=await fetch(`/api/category/${id}`,{
+        method:"DELETE"
+      },)
+      if(res.ok){
+        setcat((prev)=>prev.filter((cat)=>cat.id!==id))
+      }
+
+    }
+    const handleeditclick=(cates:cate)=>{
+      seteditid(cates.id);
+      setcatname(cates.name)
+      setdialogclick(true)
+    }
+    const handleedit=async(e:React.FormEvent)=>{
+      e.preventDefault()
+      const res=await fetch(`/api/category/${editid}`,{
+        method:"PATCH",
+        headers:{"content-type":"application/json"},
+        body:JSON.stringify(
+          {name:catname}
+        )
+      })
+      if(res.ok){
+        const updated=await res.json()
+        setcat((prev)=>prev.map((b)=>b.id === editid ? updated:b))
+        seteditid(null)
+        setcatname("")
+        setdialogclick(false)
+      }
+    }
+
+    
+
     const filtercat=cat.filter((cate)=>cate.name.toLowerCase().includes(search.toLowerCase()))
 
     return(
@@ -112,6 +149,7 @@ export default function category(){
           <TableHead className="w-[100px]">No</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Product</TableHead>
+          <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -129,6 +167,16 @@ export default function category(){
             <TableCell>{i.name}</TableCell>
             <TableCell>
               {prod.filter((pro)=>pro.category===i.name).length}
+            </TableCell>
+            <TableCell>
+              <div className="flex gap-2">
+                <Button size="sm" variant="outline" className="bg-[#0f172a] rounded-lg" onClick={()=>{handleeditclick(i)}}>
+                  <Pencil className="h-4 w-4"/>
+                </Button>
+                <Button size="sm" variant="destructive" className="rounded-lg" onClick={()=>{handledel(i.id)}}>
+                  <Trash2 className="h-4 w-4"/>
+                </Button>
+              </div>
             </TableCell>
         </TableRow>)})}
       </TableBody>
@@ -156,7 +204,7 @@ export default function category(){
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button onClick={handlesubmit}>Save</Button>
+            <Button onClick={editid?handleedit:handlesubmit}>Save</Button>
           </DialogFooter>
         </DialogContent>
       </form>
