@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import {useState,useEffect,useMemo} from "react"
-import { ChevronLeft,ChevronRight,Search,Filter,Plus } from "lucide-react"
+import { ChevronLeft,ChevronRight,Search,Filter,Plus,Pencil,Trash2 } from "lucide-react"
 import {Button} from "@/components/ui/button";
 import {
   Dialog,
@@ -26,6 +26,9 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {useRouter} from "next/navigation"
+
+
 type pro={
     id:number,
     name:string,
@@ -62,6 +65,7 @@ export default function TableDemo() {
     const [selectbran,setselectbran]=useState("")
     const [selectcate,setselectcate]=useState("")
     const [search,setsearch]=useState("")
+    const [editid,seteditid]=useState<number | null>(null)
 
     useEffect(()=>{fetch("/api/product")
               .then((d)=>d.json())
@@ -98,6 +102,61 @@ export default function TableDemo() {
     }
     
    }
+   const handleeditclick=(product:pro)=>{
+    seteditid(product.id)
+    setname(product.name)
+    setselectbran(product.brand)
+    setselectcate(product.category)
+    setprice(product.price.toString())
+    setstock(product.stock.toString())
+    setclickprod(true)
+   }
+   
+   const handleedit=async(e:React.FormEvent)=>{
+    e.preventDefault()
+    const res=await fetch(`/api/product/${editid}`,{
+      method:"PATCH",
+      headers:{"content-type":"application/json"},
+      body:JSON.stringify(
+        {
+          name:name,
+          brand:selectbran,
+          category:selectcate,
+          price:price,
+          stock:stock
+        }
+      )
+    })
+    if(res.ok){
+      const updated=await res.json()
+      setshowdata((prev)=>prev.map((b)=>b.id===editid? updated:b))
+    }
+    seteditid(null)
+    setname("")
+    setselectbran("")
+    setselectcate("")
+    setprice("")
+    setstock("")
+    setclickprod(false)
+   }
+   
+   const handledel=async(id:number)=>{
+    const del=confirm("Are you sure want to delete this product?")
+    if(!del) return;
+    const res=await fetch(`/api/product/${id}`,{
+      method:"DELETE"
+    });
+    console.log("Status:", res.status);
+    console.log("OK:", res.ok);
+
+    if(res.ok){
+      const updated=await res.json()
+      setshowdata((prev)=>prev.filter((d)=>d.id!==id))
+     
+    }
+   }
+
+
 
     useEffect(() => {
       if (page > totalpage) setpage(totalpage)
@@ -160,6 +219,7 @@ export default function TableDemo() {
           <TableHead className="text-white">Category</TableHead>
           <TableHead className="text-white">Price</TableHead>
           <TableHead className="text-white">Stock</TableHead>
+          <TableHead className="text-white">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -172,14 +232,24 @@ export default function TableDemo() {
           </TableRow>
         ))} */}
         {
-            profilter.map((d)=>{return(
+            profilter.map((d,index)=>{return(
                 <TableRow key={d.id} className="text-white">
-                    <TableCell className="font-medium">{d.id}</TableCell>
+                    <TableCell className="font-medium">{index+1}</TableCell>
                     <TableCell>{d.name}</TableCell>
                     <TableCell>{d.brand}</TableCell>
                     <TableCell>{d.category}</TableCell>
                     <TableCell>Rs.{d.price}</TableCell>
                     <TableCell>{d.stock}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button className="bg-[#0f172a] rounded-lg" size="sm" variant="outline" onClick={()=>{handleeditclick(d)}}>
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button className="rounded-lg" size="sm" variant="destructive" onClick={()=>handledel(d.id)}>
+                          <Trash2 className="h-4 w-4"/>
+                        </Button>
+                      </div>
+                    </TableCell>
                 </TableRow>
             )
 
@@ -231,7 +301,7 @@ export default function TableDemo() {
           <DialogHeader>
             <DialogTitle>Products</DialogTitle>
             <DialogDescription>
-              Create Products
+              editid?Edit product:create product
             </DialogDescription>
           </DialogHeader>
           <FieldGroup>
@@ -273,7 +343,7 @@ export default function TableDemo() {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button onClick={handlesubmit}>Save</Button>
+            <Button onClick={editid? handleedit : handlesubmit}>Save</Button>
           </DialogFooter>
         </DialogContent>
       </form>
