@@ -33,6 +33,7 @@ export default function create(){
         email : string,
         country : string,
     }
+    const [selectedcustomer,setselectedcustomer]=useState<customer | null>(null)
      const [cust,setcust]=useState <customer[]>([])
     useEffect(()=>{fetch("/api/customers")
                 .then((r)=>r.json()).then(setcust)
@@ -62,7 +63,11 @@ export default function create(){
     <CardContent>
       <form className="space-y-6">
         <div>
-          <Combobox  >
+          <Combobox onValueChange={(value)=>{
+              const c=cust.find((c)=> c.name === value)
+              if(c) setselectedcustomer(c)
+            }
+          }>
       <ComboboxInput placeholder="Name" />
       <ComboboxContent>
         <ComboboxEmpty>No items found.</ComboboxEmpty>
@@ -73,7 +78,7 @@ export default function create(){
             </ComboboxItem>
           )} */}
           {cust.map((customer)=>(
-              <ComboboxItem key={customer.id} value={customer.name}>
+              <ComboboxItem key={customer.id} value={customer.name} >
                 {customer.name}
               </ComboboxItem>)
         )}
@@ -85,7 +90,13 @@ export default function create(){
 
       </form>
       <div className="mt-5">
-      <Button className="h-10 rounded-lg border hover:bg-purple-600 text-white">
+      <Button className="h-10 rounded-lg border bg-purple-600 hover:bg-purple-600 text-white" variant="outline"
+       onClick={()=>{if(selectedcustomer){
+        localStorage.setItem("selectedcustomer",JSON.stringify(selectedcustomer))
+        router.push("/orders/create_order")
+       }
+      }}
+          >
         <SendHorizontal/>
         Confirm</Button>
       </div>
@@ -95,6 +106,9 @@ export default function create(){
     </CardFooter>
   </Card>
 </div>
-        </div>
+
+
+</div>
+       
     )
 }
