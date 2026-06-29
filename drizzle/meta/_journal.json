@@ -92,6 +92,20 @@
       "when": 1782302076729,
       "tag": "0012_acoustic_lady_bullseye",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1782541370332,
+      "tag": "0013_broad_chameleon",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1782559055720,
+      "tag": "0014_hard_nemesis",
+      "breakpoints": true
     }
   ]
 }

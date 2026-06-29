@@ -6,7 +6,8 @@ import { Separator } from "@/components/ui/separator"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
+import {Input} from "@/components/ui/input"
 import {
   Table,
   TableHeader,
@@ -24,12 +25,15 @@ import {
   ComboboxList,
 } from "@/components/ui/combobox"
 
-function getInitials(name: string) {
+function getInitials(name: string | undefined | null) {
+  if (!name) return "?"
   return name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
 }
 
 export default function CreateOrderPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const orderId = searchParams.get("id")
   const [customer, setcustomer] = useState<{
     id: number
     name: string
@@ -60,6 +64,26 @@ export default function CreateOrderPage() {
 
     fetch("/api/product").then((r)=>r.json()).then(setproducts)
   }, [])
+
+  useEffect(() => {
+    if (!orderId) return
+    fetch(`/api/order/${orderId}`)
+      .then(r => r.json())
+      .then(data => {
+        setcustomer({ id: 0, name: data.customer, email: data.email || "", country: data.country })
+        if (data.items) {
+          setitems(data.items.map((i: any) => ({
+            id: 0,
+            name: i.product_name,
+            brand: i.brand,
+            category: i.category,
+            price: i.price,
+            stock: 0,
+            qty: i.qty,
+          })))
+        }
+      })
+  }, [orderId])
    const productselect=(pro:product)=>{
        setitems((prev)=>[...prev,{...pro,qty:1}])
        setproductpick(false)
@@ -68,17 +92,28 @@ export default function CreateOrderPage() {
        setitems((prev)=>prev.filter((_,i)=>i!==index))
    }
    const total=items.reduce((sum,item)=>sum + parseFloat(item.price) * item.qty,0)
-
+   
+   const uptqty=(index:number,qty:number)=>{
+    setitems((prev)=>prev.map((item,i)=>i===index? {...item,qty:qty < 1? 1 : qty} : item))
+   }
 
   return (
     <div className="flex-1 min-h-screen bg-[#0f172a] p-8">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl text-white font-bold">Order</h1>
-        <Button className="rounded-lg border text-white" variant="destructive">
-          <Trash2 />
-          Delete
-        </Button>
+        <h1 className="text-2xl text-white font-bold">{orderId ? "Edit Order" : "Order"}</h1>
+        {orderId && (
+          <Button className="rounded-lg border text-white" variant="destructive"
+            onClick={async () => {
+              if (!confirm("Delete this order?")) return
+              await fetch(`/api/order/${orderId}`, { method: "DELETE" })
+              router.push("/orders")
+            }}
+          >
+            <Trash2 />
+            Delete
+          </Button>
+        )}
       </div>
 
       <Separator className="my-4 mt-5" />
@@ -147,12 +182,12 @@ export default function CreateOrderPage() {
               <div className="flex items-center">
                 <span className="shrink-0 text-sm text-zinc-400">Items</span>
                 <div className="mx-2 min-w-[20px] flex-1 self-center border-b border-dotted border-zinc-600" />
-                <span className="shrink-0 font-medium text-white"></span>
+                <span className="shrink-0 font-medium text-white">{items.length}</span>
               </div>
               <div className="flex items-center">
                 <span className="shrink-0 text-sm text-zinc-400">Total</span>
                 <div className="mx-2 min-w-[20px] flex-1 self-center border-b border-dotted border-zinc-600" />
-                <span className="shrink-0 font-medium text-white">Rs.</span>
+                <span className="shrink-0 font-medium text-white">Rs:{total.toFixed(2)}</span>
               </div>
             </CardContent>
           </Card>
@@ -222,7 +257,15 @@ export default function CreateOrderPage() {
                     <TableCell className="text-white">{item.name}</TableCell>
                     <TableCell className="text-zinc-400">{item.brand}</TableCell>
                     <TableCell className="text-zinc-400">{item.category}</TableCell>
-                    <TableCell className="text-right text-white">{item.qty}</TableCell>
+                    <TableCell className="text-right text-white">
+                       <Input
+                        type="number"
+                        min={1}
+                        value={item.qty}
+                        onChange={(e)=>uptqty(index,Number(e.target.value))}
+                        className="w-20 text-right bg-zinc-800 border-zinc-600 text-white"
+                       />
+                      </TableCell>
                     <TableCell className="text-right text-white">Rs.{item.price}</TableCell>
                     <TableCell className="text-right text-white">
                         Rs.{(parseFloat(item.price) * item.qty).toFixed(2)}
@@ -250,6 +293,34 @@ export default function CreateOrderPage() {
             }
             </TableBody>
           </Table>
+          <div className="mt-6 flex justify-end">
+            <Button className="bg-purple-600 hover:bg-purple-700 text-white" variant="outline"
+            onClick={async()=>{
+                const url = orderId ? `/api/order/${orderId}` : "/api/order"
+                const method = orderId ? "PATCH" : "POST"
+                const res=await fetch(url,{
+                  method,
+                  headers:{"content-type":"application/json"},
+                  body:JSON.stringify(
+                    {
+                      customer:customer?.name,
+                      email:customer?.email,
+                      country:customer?.country,
+                      total:Math.round(total),
+                      items,
+                    }
+                  )
+                })
+                if(res.ok){
+                  localStorage.removeItem("selectedcustomer");
+                  router.push("/orders")
+                }
+            }
+            }
+            >
+              {orderId ? "Save" : "Create"}
+            </Button>
+          </div>
         </CardContent>
       </Card>
 

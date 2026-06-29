@@ -205,7 +205,7 @@ export default function CustomersPage() {
           </Button>
 
           <Button asChild className="h-9 rounded-lg bg-[#a78bfa] text-white hover:bg-[#a78bfa]/90 cursor-pointer">
-            <Link href="/dashboard/customers/create">
+            <Link href="/customers/create">
               <Plus className="size-4 mr-2" />
               Create
             </Link>

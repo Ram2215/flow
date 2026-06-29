@@ -38,7 +38,14 @@ export default function create(){
     useEffect(()=>{fetch("/api/customers")
                 .then((r)=>r.json()).then(setcust)
     },[])
-    
+     
+    // const createorder=()=>{
+    //   const order={
+    //     customer,
+    //     items,
+    //     total,
+    //   }
+    // }
     return(
         <div className="flex-1 min-h-screen bg-[#0f172a] p-8">
             <div className="flex item-center justify-between">

@@ -1,0 +1,1 @@
+ALTER TABLE "Order" ALTER COLUMN "customer" SET DATA TYPE varchar(40);

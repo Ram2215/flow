@@ -13,7 +13,7 @@ export default function orderpage(){
 
   const [orders,setorders]=useState<order[]>([])
 
-  useEffect(()=>{fetch("api/order")
+  useEffect(()=>{fetch("/api/order")
                  .then((res)=>res.json()).then(setorders)},[]);
 
   const router=useRouter()
