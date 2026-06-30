@@ -2,7 +2,7 @@ import {db} from "@/db"
 import {orders} from "@/db/orders-schema"
 import {customer} from "@/db/customer_schema"
 import { orderItems } from "@/db/orders-schema"
-import {sql} from "drizzle-orm"
+import {desc, sql, sum} from "drizzle-orm"
 import {NextResponse} from "next/server"
 
 export async function GET(){
@@ -21,5 +21,11 @@ export async function GET(){
         total:Number(item.total),
     }))
 
-    return NextResponse.json({grossrevenue:gross.total,revenuebydate,totalorders:ordercount.count,totalcustomers:customercount.count,categorydata})
+    const topcust=await db.select({id:customer.id,name:customer.name,email:customer.email,country:customer.country,total:sql<number>`sum(${orders.total})`,}).from(orders).innerJoin(customer,sql`${orders.customer}=${customer.name}`).groupBy(customer.id,customer.name,customer.email,customer.country).orderBy(sql`sum(${orders.total}) desc`).limit(3)
+
+    const topprod=await db.select({name:orderItems.product_name,totalqty:sql<number>`sum(${orderItems.qty})`}).from(orderItems).groupBy(orderItems.product_name).orderBy(sql`sum(${orderItems.qty}) desc`).limit(3)
+
+    return NextResponse.json({grossrevenue:gross.total,revenuebydate,totalorders:ordercount.count,totalcustomers:customercount.count,categorydata,topcustomers:topcust.map(c=>({...c,totalspent:Number(c.total)}))
+      ,topprod:topprod.map(c=>({...c,totalqty:Number(c.totalqty)}))
+      })
 }
