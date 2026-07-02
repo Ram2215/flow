@@ -98,12 +98,12 @@ export default function CreateOrderPage() {
    }
 
   return (
-    <div className="flex-1 min-h-screen bg-[#0f172a] p-8">
+    <div className="flex-1 min-h-screen bg-background p-8">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl text-white font-bold">{orderId ? "Edit Order" : "Order"}</h1>
+        <h1 className="text-2xl text-foreground font-bold">{orderId ? "Edit Order" : "Order"}</h1>
         {orderId && (
-          <Button className="rounded-lg border text-white" variant="destructive"
+          <Button className="rounded-lg border text-foreground" variant="destructive"
             onClick={async () => {
               if (!confirm("Delete this order?")) return
               await fetch(`/api/order/${orderId}`, { method: "DELETE" })
@@ -121,7 +121,7 @@ export default function CreateOrderPage() {
       {/* Top Section: Customer + Summary */}
       <div className="mt-8 flex gap-6">
         <div className="flex-1">
-          <Card className="bg-[#1e293b] border-zinc-700 text-white shadow-lg rounded-xl">
+          <Card className="bg-card border-zinc-700 text-foreground shadow-lg rounded-xl">
             <CardHeader>
               <div className="flex w-full items-center justify-between">
                 <CardTitle className="text-lg font-semibold">Customer</CardTitle>
@@ -149,12 +149,12 @@ export default function CreateOrderPage() {
                     </AvatarFallback>
                   </Avatar>
                   <div className="space-y-2">
-                    <p className="text-base font-semibold text-white">{customer.name}</p>
-                    <div className="flex items-center gap-2 text-zinc-400">
+                    <p className="text-base font-semibold text-foreground">{customer.name}</p>
+                    <div className="flex items-center gap-2 text-foreground">
                       <Mail className="size-4" />
                       <span className="text-sm">{customer.email}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-zinc-400">
+                    <div className="flex items-center gap-2 text-foreground">
                       <MapPin className="size-4" />
                       <span className="text-sm">{customer.country}</span>
                     </div>
@@ -168,7 +168,7 @@ export default function CreateOrderPage() {
         </div>
 
         <div className="flex-1">
-          <Card className="bg-[#1e293b] border-zinc-700 text-white shadow-lg rounded-xl">
+          <Card className="bg-card border-zinc-700 text-foreground shadow-lg rounded-xl">
             <CardHeader>
               <div className="flex w-full items-center justify-between">
                 <CardTitle className="text-lg font-semibold">Summary</CardTitle>
@@ -180,14 +180,14 @@ export default function CreateOrderPage() {
             <Separator className="mx-6 w-[calc(100%-3rem)] bg-zinc-700" />
             <CardContent className="space-y-3 pt-6">
               <div className="flex items-center">
-                <span className="shrink-0 text-sm text-zinc-400">Items</span>
+                <span className="shrink-0 text-sm text-foreground">Items</span>
                 <div className="mx-2 min-w-[20px] flex-1 self-center border-b border-dotted border-zinc-600" />
-                <span className="shrink-0 font-medium text-white">{items.length}</span>
+                <span className="shrink-0 font-medium text-foreground">{items.length}</span>
               </div>
               <div className="flex items-center">
-                <span className="shrink-0 text-sm text-zinc-400">Total</span>
+                <span className="shrink-0 text-sm text-foreground">Total</span>
                 <div className="mx-2 min-w-[20px] flex-1 self-center border-b border-dotted border-zinc-600" />
-                <span className="shrink-0 font-medium text-white">Rs:{total.toFixed(2)}</span>
+                <span className="shrink-0 font-medium text-foreground">Rs:{total.toFixed(2)}</span>
               </div>
             </CardContent>
           </Card>
@@ -195,13 +195,13 @@ export default function CreateOrderPage() {
       </div>
 
       {/* Items Section - full width */}
-      <Card className="mt-6 bg-[#1e293b] border-zinc-700 text-white shadow-lg rounded-xl">
+      <Card className="mt-6 bg-card border-zinc-700 text-foreground shadow-lg rounded-xl">
         <CardHeader>
           <div className="flex w-full items-center justify-between">
             <CardTitle className="text-lg font-semibold">Items</CardTitle>
             <Button
               variant="outline"
-              className="h-8 gap-1 rounded-lg bg-purple-600 hover:bg-purple-700 text-white border-0"
+              className="h-8 gap-1 rounded-lg bg-purple-600 hover:bg-purple-700 text-foreground border-0"
               onClick={()=>setproductpick(true)}
             >
               <Plus className="size-4" />
@@ -209,17 +209,17 @@ export default function CreateOrderPage() {
             </Button>
           </div>
         </CardHeader>
-        <Separator className="mx-6 w-[calc(100%-3rem)] bg-zinc-700" />
+        <Separator className="mx-6 w-[calc(100%-3rem)] bg-foreground" />
         <CardContent className="pt-6">
           <Table>
             <TableHeader>
               <TableRow className="border-zinc-700">
-                <TableHead className="text-zinc-400">Product</TableHead>
-                <TableHead className="text-zinc-400">Brand</TableHead>
-                <TableHead className="text-zinc-400">Category</TableHead>
-                <TableHead className="text-right text-zinc-400">Qty</TableHead>
-                <TableHead className="text-right text-zinc-400">Price</TableHead>
-                <TableHead className="text-right text-zinc-400">Total</TableHead>
+                <TableHead className="text-foreground">Product</TableHead>
+                <TableHead className="text-foreground">Brand</TableHead>
+                <TableHead className="text-foreground">Category</TableHead>
+                <TableHead className="text-right text-foreground">Qty</TableHead>
+                <TableHead className="text-right text-foreground">Price</TableHead>
+                <TableHead className="text-right text-foreground">Total</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -240,7 +240,7 @@ export default function CreateOrderPage() {
                                                 <ComboboxItem key={prod.id} value={prod.name}>
                                                     <div className="flex items-center justify-between w-full">
                                                         <span>{prod.name}</span>
-                                                        <span className="text-xs text-zinc-500">Rs.{prod.price}</span>
+                                                        <span className="text-xs text-foreground">Rs.{prod.price}</span>
                                                     </div>
                                                 </ComboboxItem>
                                             ))
@@ -254,20 +254,20 @@ export default function CreateOrderPage() {
               }
               {items.length > 0 ? items.map((item,index)=>(
                 <TableRow key={item.id+"-"+index} className="border-zinc-700">
-                    <TableCell className="text-white">{item.name}</TableCell>
-                    <TableCell className="text-zinc-400">{item.brand}</TableCell>
-                    <TableCell className="text-zinc-400">{item.category}</TableCell>
-                    <TableCell className="text-right text-white">
+                    <TableCell className="text-foreground">{item.name}</TableCell>
+                    <TableCell className="text-foreground">{item.brand}</TableCell>
+                    <TableCell className="text-foreground">{item.category}</TableCell>
+                    <TableCell className="text-right text-foreground">
                        <Input
                         type="number"
                         min={1}
                         value={item.qty}
                         onChange={(e)=>uptqty(index,Number(e.target.value))}
-                        className="w-20 text-right bg-zinc-800 border-zinc-600 text-white"
+                        className="w-20 text-right bg-zinc-800 border-zinc-600 text-foreground"
                        />
                       </TableCell>
-                    <TableCell className="text-right text-white">Rs.{item.price}</TableCell>
-                    <TableCell className="text-right text-white">
+                    <TableCell className="text-right text-foreground">Rs.{item.price}</TableCell>
+                    <TableCell className="text-right text-foreground">
                         Rs.{(parseFloat(item.price) * item.qty).toFixed(2)}
                     </TableCell>
                     <TableCell>
@@ -281,7 +281,7 @@ export default function CreateOrderPage() {
               )): ! productpick && (
                 <TableRow>
                     <TableCell colSpan={7} className="h-40 text-center">
-                        <div className="flex flex-col items-center justify-center gap-2 text-zinc-500">
+                        <div className="flex flex-col items-center justify-center gap-2 text-foreground">
                         <Package className="size-10"/>
                         <span>Nothing here</span>
                         </div>

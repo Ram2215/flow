@@ -21,10 +21,10 @@ export function DataTable<Tdata extends {order_id:string},Tvalue>({
         <div className="rounded-md border">
             <Table>
                 <TableHeader>
-                   {table.getHeaderGroups().map((headerGroup)=>( 
-                    <TableRow key={headerGroup.id}>
-                        {headerGroup.headers.map((header)=>(
-                            <TableHead key={header.id} className="text-white">
+                   {table.getHeaderGroups().map((headergroup)=>( 
+                    <TableRow key={headergroup.id}>
+                        {headergroup.headers.map((header)=>(
+                            <TableHead key={header.id} className="text-foreground">
                                 {header.isPlaceholder? null : flexRender(header.column.columnDef.header,
                                     header.getContext()
                                 )
@@ -42,7 +42,7 @@ export function DataTable<Tdata extends {order_id:string},Tvalue>({
                              onClick={()=>router.push(`orders/create_order?id=${row.original.order_id}`)}
                              >
                                 {row.getVisibleCells().map((cell)=>
-                                <TableCell key={cell.id} className="text-white">
+                                <TableCell key={cell.id} className="text-foreground">
                                    {flexRender(cell.column.columnDef.cell,
                                         cell.getContext()
                                     )}
@@ -53,7 +53,7 @@ export function DataTable<Tdata extends {order_id:string},Tvalue>({
                         ))
                     ):(
                         <TableRow>
-                            <TableCell colSpan={columns.length} className="text-center h-20 text-white">
+                            <TableCell colSpan={columns.length} className="text-center h-20 text-foreground">
                               No results
                             </TableCell>
                         </TableRow>

@@ -117,15 +117,15 @@ export default function category(){
     const filtercat=cat.filter((cate)=>cate.name.toLowerCase().includes(search.toLowerCase()))
 
     return(
-        <div suppressHydrationWarning className="flex-1 min-h-screen bg-[#0f172a] p-8">
+        <div suppressHydrationWarning className="flex-1 min-h-screen bg-background p-8">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-white">Categories</h1>
+                <h1 className="text-2xl font-bold text-foreground">Categories</h1>
                 <div className="flex items-center gap-3">
                 <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"/>
                     <input
                     placeholder ="Enter Category..."
-                    className ="h-9 w-64 rounded-lg border border-zinc-500 pl-10 pr-8 focus:border-zinc-500 focus:ring-zinc-500 text-small text-white" 
+                    className ="h-9 w-64 rounded-lg border border-zinc-500 pl-10 pr-8 focus:border-zinc-500 focus:ring-zinc-500 text-small text-foreground" 
                     onChange={(e)=>setsearch(e.target.value)}
                     value={search}
                     />
@@ -170,7 +170,7 @@ export default function category(){
             </TableCell>
             <TableCell>
               <div className="flex gap-2">
-                <Button size="sm" variant="outline" className="bg-[#0f172a] rounded-lg" onClick={()=>{handleeditclick(i)}}>
+                <Button size="sm" variant="outline" className="bg-background rounded-lg" onClick={()=>{handleeditclick(i)}}>
                   <Pencil className="h-4 w-4"/>
                 </Button>
                 <Button size="sm" variant="destructive" className="rounded-lg" onClick={()=>{handledel(i.id)}}>

@@ -28,15 +28,15 @@ export default function DashboardPage() {
   useEffect(()=>{fetch("api/dashboard/stats").then((r)=>r.json()).then(setdata)},[])
 
   if(!data) return(
-    <div className="flex-1 bg-[#0f172a] min-h-screen p-8">
+    <div className="flex-1 bg-background min-h-screen p-8">
        <p className="text-white">Loading...</p>
     </div>
   )
   return (
-    <div className="flex-1 bg-[#0f172a] min-h-screen p-8 space-y-6">
-      <h1 className="pb-4 text-2xl font-bold text-white">Dashboard</h1>
+    <div className="flex-1 bg-background min-h-screen p-8 space-y-6">
+      <h1 className="pb-4 text-2xl font-bold text-foreground">Dashboard</h1>
       <div className="flex gap-6">
-        <Card className="flex-1 rounded-xl border border-zinc-700 bg-[#1e293b] text-white shadow-lg">
+        <Card className="flex-1 rounded-xl border border-border bg-card text-foreground shadow-lg">
           <CardHeader>
             <CardTitle className="w-56 text-2xl text-muted-foreground">Gross Revenue</CardTitle>
           </CardHeader>
@@ -45,7 +45,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       
-       <Card className="flex-1 rounded-xl border border-zinc-700 bg-[#1e293b] text-white shadow-lg">
+       <Card className="flex-1 rounded-xl border border-border bg-card text-foreground shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl text-muted-foreground">
             Total orders
@@ -56,7 +56,7 @@ export default function DashboardPage() {
          </CardContent>
        </Card>
 
-       <Card className="flex-1 rounded-xl border border-zinc-700 bg-[#1e293b] text-white shadow-lg">
+       <Card className="flex-1 rounded-xl border border-border bg-card text-foreground shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl text-muted-foreground">
             Total Customers
@@ -70,7 +70,7 @@ export default function DashboardPage() {
         
      
       <div className="mt-4 flex gap-6">
-      <Card className="flex-1 rounded-xl border border-zinc-700 bg-[#1e293b] text-white shadow-lg">
+      <Card className="flex-1 rounded-xl border border-border bg-card text-foreground shadow-lg">
         <CardHeader>
           <CardTitle>
             Revenue Over time
@@ -89,7 +89,7 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
 
-      <Card className="flex-1 rounded-xl border border-zinc-700 bg-[#1e293b] text-white shadow-lg">
+      <Card className="flex-1 rounded-xl border border-border bg-card text-foreground shadow-lg">
         <CardHeader>
           <CardTitle>Products ordered by category
           </CardTitle>
@@ -123,7 +123,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="mt-6 flex gap-6">
-      <Card className="flex-1 rounded-xl border border-zinc-700 bg-[#1e293b] text-white shadow-lg">
+      <Card className="flex-1 rounded-xl border border-border bg-card text-foreground shadow-lg">
   <CardHeader className="flex flex-row items-center justify-between">
     <CardTitle className="text-2xl text-muted-foreground">
       Top 3 Customers
@@ -131,7 +131,7 @@ export default function DashboardPage() {
 
     <Button
       variant="ghost"
-      className="flex items-center gap-2 text-zinc-400 hover:bg-zinc-800 hover:text-white"
+      className="flex items-center gap-2 text-muted-foreground hover:bg-accent hover:text-foreground"
       onClick={() => router.push("/customers")}
     >
       Customer
@@ -143,7 +143,7 @@ export default function DashboardPage() {
     {data.topcustomers.map((c, i) => (
       <div
         key={c.id}
-        className="flex items-center justify-between rounded-lg bg-[#0f172a] px-5 py-4"
+        className="flex items-center justify-between rounded-lg bg-background px-5 py-4"
       >
         <div className="flex items-center gap-4">
           <span
@@ -152,22 +152,22 @@ export default function DashboardPage() {
                 ? "bg-yellow-500 text-black"
                 : i === 1
                 ? "bg-zinc-400 text-black"
-                : "bg-amber-700 text-white"
+                : "bg-amber-700 text-foreground"
             }`}
           >
             {i + 1}
           </span>
 
           <div>
-            <p className="font-medium text-white">{c.name}</p>
-            <p className="text-xs text-zinc-400">
+            <p className="font-medium text-foreground">{c.name}</p>
+            <p className="text-xs text-muted-foreground">
               {c.email} · {c.country}
             </p>
           </div>
         </div>
 
         <div>
-          <p className="text-lg font-bold text-emerald-400">
+          <p className="text-lg font-bold text-green-600">
             Rs.{c.total.toLocaleString()}
           </p>
         </div>
@@ -176,12 +176,12 @@ export default function DashboardPage() {
   </CardContent>
 </Card>
 
-      <Card className="flex-1 rounded-xl border border-zinc-700 bg-[#1e293b] text-white shadow-lg">
+      <Card className="flex-1 rounded-xl border border-border bg-card text-foreground shadow-lg">
         <CardHeader className="flex flex-row items-center justify-between">
          <CardTitle className="text-2xl font-bold">
             Best Seller
          </CardTitle>
-          <Button className="flex items-center gap-2 text-zinc-400 hover:text-white hover:bg-zinc-800" variant="ghost" onClick={()=>router.push("/warehouse/products")}> 
+          <Button className="flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-accent" variant="ghost" onClick={()=>router.push("/warehouse/products")}> 
             <span className="flex items-center gap-2">
               Best Sellers
               <ArrowRight className="h-4 w-4"/>
@@ -190,14 +190,14 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent className="space-y-4">
            {data.topprod.map((prod,index)=>(
-            <div key={prod.name} className="flex items-center justify-between rounded-lg bg-[#0f172a] px-5 py-4">
+            <div key={prod.name} className="flex items-center justify-between rounded-lg bg-background px-5 py-4">
               <div className="flex items-center gap-4">
-                <span className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${index===0? 'bg-yellow-500 text-black':index===1? 'bg-zinc-400 text-black': 'bg-amber-700 text-white'}`}>
+                <span className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${index===0? 'bg-yellow-500 text-black':index===1? 'bg-zinc-400 text-black': 'bg-amber-700 text-foreground'}`}>
                   {index+1}
                 </span>
-                <p className="font-medium text-white">{prod.name}</p>
+                <p className="font-medium text-foreground">{prod.name}</p>
               </div>
-              <p className="text-lg font-bold text-emerald-400">{prod.totalqty}</p>
+              <p className="text-lg font-bold text-green-600">{prod.totalqty}</p>
                   
             </div>
            ))}

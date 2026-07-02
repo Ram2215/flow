@@ -40,7 +40,7 @@ export const columns:ColumnDef<order>[]=[
             return(
 
                 <div className="flex gap-2">
-                    {/* <Button onClick={()={some logic}} */}
+                    
                 
                 <Button onClick={async()=>{
                     if(!confirm("Delete this order?")) return;

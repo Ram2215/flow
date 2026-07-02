@@ -167,9 +167,9 @@ export default function CustomersPage() {
   };
 
   return (
-    <div suppressHydrationWarning className="flex-1 bg-[#0f172a] min-h-screen p-8">
+    <div suppressHydrationWarning className="flex-1 bg-background min-h-screen p-8">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Customers</h1>
+        <h1 className="text-2xl font-bold text-foreground">Customers</h1>
 
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -182,7 +182,7 @@ export default function CustomersPage() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              className="h-9 w-56 rounded-lg border border-zinc-800 bg-[#0f172a] pl-9 pr-8 text-sm text-white placeholder-zinc-500 outline-none focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 transition-colors"
+              className="h-9 w-56 rounded-lg border border-zinc-800 bg-background pl-9 pr-8 text-sm text-white placeholder-zinc-500 outline-none focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 transition-colors"
             />
             {search && (
               <button
@@ -213,30 +213,30 @@ export default function CustomersPage() {
         </div>
       </div>
                        {/* table */}
-      <div className="rounded-xl border border-zinc-800 bg-[#1e293b] overflow-hidden">
+      <div className="rounded-xl border border-zinc-800 bg-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-zinc-800">
-                <th className="px-6 py-4 text-left text-sm font-semibold text-white">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
                   <span className="inline-flex items-center gap-1.5">
                     Name
                     <ArrowUpDown className="size-3.5 text-zinc-500" />
                   </span>
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-white">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
                   <span className="inline-flex items-center gap-1.5">
                     Country
                     <ArrowUpDown className="size-3.5 text-zinc-500" />
                   </span>
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-white">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
                   <span className="inline-flex items-center gap-1.5">
                     E-Mail
                     <ArrowUpDown className="size-3.5 text-zinc-500" />
                   </span>
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-white">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
                   <span className="inline-flex items-center gap-1.5">
                     Actions
                   </span>
@@ -255,14 +255,14 @@ export default function CustomersPage() {
                   <tr key={c.id} className="border-b border-zinc-800 last:border-b-0 hover:bg-zinc-800/30 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className={`size-9 rounded-full ${getAvatarColor(c.name)} flex items-center justify-center text-sm font-medium text-white shrink-0`}>
+                        <div className={`size-9 rounded-full ${getAvatarColor(c.name)} flex items-center justify-center text-sm font-medium text-foreground shrink-0`}>
                           {getInitial(c.name)}
                         </div>
-                        <span className="text-sm font-medium text-white">{c.name}</span>
+                        <span className="text-sm font-medium text-foreground">{c.name}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-zinc-300">{c.country}</td>
-                    <td className="px-6 py-4 text-sm text-zinc-300">{c.email}</td>
+                    <td className="px-6 py-4 text-sm text-foreground">{c.country}</td>
+                    <td className="px-6 py-4 text-sm text-foreground">{c.email}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button onClick={() => openEditSheet(c)}
@@ -354,7 +354,7 @@ export default function CustomersPage() {
           value={editName}
           onChange={(e) => setEditName(e.target.value)}
           placeholder="Enter customer name"
-          className="h-10 w-full rounded-lg border-zinc-700/50 bg-[#0f172a] text-white placeholder-zinc-500 focus:border-[#a78bfa] focus:ring-[#a78bfa]/30"
+          className="h-10 w-full rounded-lg border-zinc-700/50 bg-background text-white placeholder-zinc-500 focus:border-[#a78bfa] focus:ring-[#a78bfa]/30"
           required
         />
       </div>
@@ -373,7 +373,7 @@ export default function CustomersPage() {
           value={editEmail}
           onChange={(e) => setEditEmail(e.target.value)}
           placeholder="Enter email address"
-          className="h-10 w-full rounded-lg border-zinc-700/50 bg-[#0f172a] text-white placeholder-zinc-500 focus:border-[#a78bfa] focus:ring-[#a78bfa]/30"
+          className="h-10 w-full rounded-lg border-zinc-700/50 bg-background text-white placeholder-zinc-500 focus:border-[#a78bfa] focus:ring-[#a78bfa]/30"
           required
         />
       </div>
@@ -391,7 +391,7 @@ export default function CustomersPage() {
             id="edit-country"
             value={editCountry}
             onChange={(e) => setEditCountry(e.target.value)}
-            className="h-10 w-full appearance-none rounded-lg border border-zinc-700/50 bg-[#0f172a] px-3 text-white outline-none transition-[color,box-shadow] focus:border-[#a78bfa] focus:ring-2 focus:ring-[#a78bfa]/30"
+            className="h-10 w-full appearance-none rounded-lg border border-zinc-700/50 bg-background px-3 text-white outline-none transition-[color,box-shadow] focus:border-[#a78bfa] focus:ring-2 focus:ring-[#a78bfa]/30"
             required
           >
             <option value="" disabled>
@@ -408,7 +408,7 @@ export default function CustomersPage() {
               <option
                 key={c}
                 value={c}
-                className="bg-[#0f172a]"
+                className="bg-background"
               >
                 {c}
               </option>
@@ -477,7 +477,7 @@ export default function CustomersPage() {
               value={filtername}
               onChange={(e) => setfiltername(e.target.value)}
               placeholder="Filter by name"
-              className="h-10 w-full rounded-lg border-zinc-700/50 bg-[#0f172a] text-white placeholder-zinc-500 focus:border-[#a78bfa] focus:ring-[#a78bfa]/30"
+              className="h-10 w-full rounded-lg border-zinc-700/50 bg-background text-white placeholder-zinc-500 focus:border-[#a78bfa] focus:ring-[#a78bfa]/30"
             />
           </div>
 
@@ -490,11 +490,11 @@ export default function CustomersPage() {
                 id="filter-country"
                 value={filtercountry}
                 onChange={(e) => setfiltercountry(e.target.value)}
-                className="h-10 w-full appearance-none rounded-lg border border-zinc-700/50 bg-[#0f172a] px-3 text-white outline-none transition-[color,box-shadow] focus:border-[#a78bfa] focus:ring-2 focus:ring-[#a78bfa]/30"
+                className="h-10 w-full appearance-none rounded-lg border border-zinc-700/50 bg-background px-3 text-white outline-none transition-[color,box-shadow] focus:border-[#a78bfa] focus:ring-2 focus:ring-[#a78bfa]/30"
               >
                 <option value="">All countries</option>
                 {["Brazil", "Germany", "France", "United States", "India"].map((c) => (
-                  <option key={c} value={c} className="bg-[#0f172a]">
+                  <option key={c} value={c} className="bg-background">
                     {c}
                   </option>
                 ))}

@@ -122,15 +122,15 @@ export default function TableDemo() {
 
   return (<>
   {console.log(prod)}
-  <div suppressHydrationWarning className="flex-1 bg-[#0f172a] min-h-screen p-8">
+  <div suppressHydrationWarning className="flex-1 bg-background min-h-screen p-8">
     <div className="flex item-center justify-between">
-      <h1 className="text-white text-2xl font-bold">Brands</h1>
+      <h1 className="text-foreground text-2xl font-bold">Brands</h1>
       <div className="flex item-center gap-3">
       <div className="relative">
         <Search className="absolute left-4 top-1/2 -translate-1/2 text-zinc-500"/>
         <input
         placeholder="Name..."
-        className="h-9 w-56 rounded-lg border border-zinc-500 bg-[#0f172a] text-small text-white placeholder-zinc-500 pl-10 pr-8 focus:border-zinc-500 focus:ring-zinc-500"
+        className="h-9 w-56 rounded-lg border border-zinc-500 bg-background text-small text-white placeholder-zinc-500 pl-10 pr-8 focus:border-zinc-500 focus:ring-zinc-500"
         onChange={(e)=>setsearchname(e.target.value)}
         value={searchname}/>
       </div>
@@ -173,7 +173,7 @@ export default function TableDemo() {
                 
                 <TableCell >
                   <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="bg-[#0f172a] rounded-large" onClick={()=>{handleeditclick(i)}}>
+                  <Button variant="outline" size="sm" className="bg-background rounded-large" onClick={()=>{handleeditclick(i)}}>
                     <Pencil className="h-4 w-4"/>
                   </Button>
                   <Button size="sm" variant="destructive" className="rounded-large" onClick={()=>handledel(i.id)}>

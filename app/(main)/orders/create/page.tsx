@@ -47,16 +47,16 @@ export default function create(){
     //   }
     // }
     return(
-        <div className="flex-1 min-h-screen bg-[#0f172a] p-8">
+        <div className="flex-1 min-h-screen bg-background p-8">
             <div className="flex item-center justify-between">
-                 <h1 className="text-2xl text-white font-bold">New Order</h1>
+                 <h1 className="text-2xl text-foreground font-bold">New Order</h1>
                  <Button className="h-9 rounded-lg-border border-zinc-500" onClick={()=>router.push("/orders")}>
                     <Undo2 className="text-white"/>
                     discard
                  </Button>
             </div>
            <div className="mt-10 flex justify-start">
-  <Card className="w-[750px] min-h-[350px] rounded-xl border border-zinc-700 bg-[#1e293b] text-white shadow-lg">
+  <Card className="w-[750px] min-h-[350px] rounded-xl border border-zinc-700 bg-card text-foreground shadow-lg">
     <CardHeader>
       <CardTitle className="text-2xl font-semibold">
         Customer

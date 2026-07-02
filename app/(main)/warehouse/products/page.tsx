@@ -178,9 +178,9 @@ export default function TableDemo() {
     const profilter=showdata.filter((pro)=>pro.name.toLowerCase().includes(search.toLowerCase()))
 
   return (
-     <div suppressHydrationWarning className="flex-1 bg-[#0f172a] min-h-screen p-8">
+     <div suppressHydrationWarning className="flex-1 bg-background min-h-screen p-8">
         <div className="mb-6 flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-white">Products</h1>
+            <h1 className="text-2xl font-bold text-foreground">Products</h1>
 
             <div className="flex item-center gap-3">
                 <div className="relative">
@@ -188,14 +188,14 @@ export default function TableDemo() {
                     <input
                     type="text"
                     placeholder="Name..."
-                    className="h-9 w-56 rounded-lg border border-zinc-800 bg-[#0f172a] pl-10 pr-8 text-small text-white placeholder-zinc-500 outline-none focus:border-zinc-600 focus:ring-zinc-600 transition colors"
+                    className="h-9 w-56 rounded-lg border border-zinc-800 bg-background pl-10 pr-8 text-small text-white placeholder-zinc-500 outline-none focus:border-zinc-600 focus:ring-zinc-600 transition colors"
                     onChange={(e)=>setsearch(e.target.value)}
                     value={search}
                     />
                 </div>
                 <Button
                     variant="outline"
-                    className="relative h-9 rounded-lg border-zinc-700 bg-transparent text-white hover:bg-zinc-300 hover-text-white cursor-pointer " 
+                    className="relative h-9 rounded-lg border-zinc-700 bg-transparent text-foreground hover:bg-zinc-300 hover-text-white cursor-pointer " 
                  >
                     <Filter className="size-3 mr-2"/>
                     Filter
@@ -213,13 +213,13 @@ export default function TableDemo() {
       <TableCaption>Product table</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px] text-white">No</TableHead>
-          <TableHead className="text-white">Name</TableHead>
-          <TableHead className="text-white">Brand</TableHead>
-          <TableHead className="text-white">Category</TableHead>
-          <TableHead className="text-white">Price</TableHead>
-          <TableHead className="text-white">Stock</TableHead>
-          <TableHead className="text-white">Actions</TableHead>
+          <TableHead className="w-[100px] text-foreground">No</TableHead>
+          <TableHead className="text-foreground">Name</TableHead>
+          <TableHead className="text-foreground">Brand</TableHead>
+          <TableHead className="text-foreground">Category</TableHead>
+          <TableHead className="text-foreground">Price</TableHead>
+          <TableHead className="text-foreground">Stock</TableHead>
+          <TableHead className="text-foreground">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -233,7 +233,7 @@ export default function TableDemo() {
         ))} */}
         {
             profilter.map((d,index)=>{return(
-                <TableRow key={d.id} className="text-white">
+                <TableRow key={d.id} className="text-foreground">
                     <TableCell className="font-medium">{index+1}</TableCell>
                     <TableCell>{d.name}</TableCell>
                     <TableCell>{d.brand}</TableCell>
@@ -242,10 +242,10 @@ export default function TableDemo() {
                     <TableCell>{d.stock}</TableCell>
                     <TableCell>
                       <div className="flex gap-2">
-                        <Button className="bg-[#0f172a] rounded-lg" size="sm" variant="outline" onClick={()=>{handleeditclick(d)}}>
+                        <Button className="bg-background rounded-lg" size="sm" variant="outline" onClick={()=>{handleeditclick(d)}}>
                           <Pencil className="h-4 w-4" />
                         </Button>
-                        <Button className="rounded-lg" size="sm" variant="destructive" onClick={()=>handledel(d.id)}>
+                        <Button className="bg-background rounded-lg" size="sm" variant="destructive" onClick={()=>handledel(d.id)}>
                           <Trash2 className="h-4 w-4"/>
                         </Button>
                       </div>

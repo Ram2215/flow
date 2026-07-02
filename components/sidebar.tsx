@@ -15,7 +15,10 @@ import {
   Search,
   Settings,
   PanelLeftClose,
+  Sun,Moon
 } from "lucide-react";
+import { useTheme } from "next-themes";
+import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuTrigger,DropdownMenuSeparator,} from "@/components/ui/dropdown-menu";
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -57,6 +60,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [warehouseopen,setwarehouseopen]=useState(false)
+  const {theme,setTheme}=useTheme();
 
   useEffect(() => {
     fetch("/api/auth/get-session")
@@ -70,42 +74,55 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
   const initial = user?.name?.charAt(0)?.toUpperCase() ?? "?";
 
   return (
-    <aside className={`fixed left-0 top-0 z-40 flex h-full flex-col bg-[#0f172a] border-r border-zinc-800 transition-all duration-200 ${collapsed ? 'w-16' : 'w-64'}`}>
+    <aside className={`fixed left-0 top-0 z-40 flex h-full flex-col bg-sidebar border-r border-sidebar transition-all duration-200 ${collapsed ? 'w-16' : 'w-64'}`}>
       <div className="flex items-center gap-2.5 px-6 pt-8 pb-6">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
         </svg>
-        {!collapsed && <span className="text-xl font-bold text-[#C084FC] tracking-tight">flow</span>}
+        {!collapsed && <span className="text-xl font-bold text-sidebar-primary tracking-tight">flow</span>}
       </div>
 
-      <div className={cn("mb-6 flex items-center gap-3 rounded-lg py-3 bg-[#1e293b]", collapsed ? "mx-0 justify-center px-3" : "mx-4 px-3")}>
+      <div className={cn("mb-6 flex items-center gap-3 rounded-lg py-3 bg-sidebar-accent", collapsed ? "mx-0 justify-center px-3" : "mx-4 px-3")}>
         {loading ? (
           <>
-            <Skeleton className="size-10 shrink-0 rounded-full bg-zinc-700" />
+            <Skeleton className="size-10 shrink-0 rounded-full bg-sidebar-border" />
             {!collapsed && (
               <>
                 <div className="flex-1 space-y-2">
-                  <Skeleton className="h-3.5 w-20 bg-zinc-700" />
-                  <Skeleton className="h-3 w-28 bg-zinc-700" />
+                  <Skeleton className="h-3.5 w-20 bg-sidebar-border" />
+                  <Skeleton className="h-3 w-28 bg-sidebar-border" />
                 </div>
-                <Skeleton className="size-4 shrink-0 rounded bg-zinc-700" />
+                <Skeleton className="size-4 shrink-0 rounded bg-sidebar-border" />
               </>
             )}
           </>
         ) : (
           <>
-            <div className="size-10 rounded-full bg-indigo-600 flex items-center justify-center text-sm font-medium text-white shrink-0">
+            <div className="size-10 rounded-full bg-indigo-600 flex items-center justify-center text-sm font-medium text-sidebar-foreground shrink-0">
               {initial}
             </div>
             {!collapsed && (
               <>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-white truncate">{user?.name ?? "User"}</p>
+                  <p className="text-sm font-semibold text-sidebar-foreground truncate">{user?.name ?? "User"}</p>
                   <p className="text-xs text-zinc-400 truncate">{user?.email ?? ""}</p>
                 </div>
-                <button className="text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer">
+                {/* <button className="text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer">
                   <Settings className="size-4" />
-                </button>
+                </button> */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer">
+                      <Settings className="size-4"/>
+                    </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" sideOffset={8}>
+                      <DropdownMenuItem onClick={()=>setTheme(theme==="dark"?"light":"dark")}>
+                        {theme==="dark"?<Sun className="size-4"/>:<Moon className="size-4"/>}
+                        {theme==="dark"?"Light Mode":"Dark Mode"}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
               </>
             )}
           </>
@@ -119,7 +136,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
             return(
               <div key={item.label} >
                 <button onClick={()=>setwarehouseopen(true)}
-                   className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-[#1e293b]/50">
+                   className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50">
                   <Icon className="size-4 shrink-0"/>
                   {!collapsed && (
             <>
@@ -141,8 +158,8 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
                 {!collapsed && warehouseopen && (
                   <div className="ml-8 mt-1 space-y-1">
                     {item.children.map((child)=>
-                    <Link key={child.href} href={child.href} className={cn("block rounded-md px-3 py-2 text-sm text-zinc-400 hover:bg-[#1e293b] hover:text-white",
-                      pathname===child.href && "bg-[#1e293b] text-white"
+                    <Link key={child.href} href={child.href} className={cn("block rounded-md px-3 py-2 text-sm text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground",
+                      pathname===child.href && "bg-sidebar-accent text-sidebar-foreground"
                     )}>{child.label}</Link>
                     )}
                   </div>
@@ -159,8 +176,8 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all",
                 isActive
-                  ? "bg-[#1e293b] text-white font-semibold"
-                  : "text-zinc-400 hover:text-zinc-200 hover:bg-[#1e293b]/50"
+                  ? "bg-sidebar-accent text-sidebar-foreground font-semibold"
+                  : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50"
               )}
             >
               <Icon className="size-4 shrink-0" />
@@ -174,11 +191,11 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
       <div className="mx-4 my-3 h-px bg-zinc-800" />
 
       <div className="px-3 pb-4">
-        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-[#1e293b]/50 transition-all cursor-pointer">
+        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/60 hover:text-zinc-200 hover:bg-sidebar-accent/50 transition-all cursor-pointer">
           <Search className="size-4 shrink-0" />
           {!collapsed && <span className="flex-1 text-left">Search</span>}
           {!collapsed && (
-            <kbd className="hidden sm:inline-flex items-center gap-1 rounded-md border border-zinc-700 bg-zinc-800 px-1.5 py-0.5 text-[10px] font-medium text-zinc-400">
+            <kbd className="hidden sm:inline-flex items-center gap-1 rounded-md border border-zinc-700 bg-zinc-800 px-1.5 py-0.5 text-[10px] font-medium text-sidebar-foreground/60">
               ⌘G
             </kbd>
           )}
@@ -186,11 +203,11 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
       </div>
 
       <div className="flex flex-col">
-        <div className="border-t border-zinc-800" />
+        <div className="border-t border-sidebar-border" />
         <div className="px-3 py-4">
           <button
             onClick={onToggle}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-[#1e293b]/50 transition-all cursor-pointer"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/60 hover:text-zinc-200 hover:bg-sidebar-accent/50 transition-all cursor-pointer"
           >
             <PanelLeftClose className={`size-4 shrink-0 transition-transform ${collapsed ? 'rotate-180' : ''}`} />
             {!collapsed && <span>Collapse</span>}
